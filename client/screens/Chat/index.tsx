@@ -5,6 +5,7 @@ import styles from "./chat.styles";
 import { IRole, IMessageContext } from "../../interfaces";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { hasHitDailyLimit, showAlert } from "../../utils";
+import { API_URL } from "@env";
 
 const Chat = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -51,23 +52,21 @@ const Chat = () => {
   const sendMsgToServer = async () => {
     const lastSixMessages = messagesContext.slice(-6);
     try {
-      const response = await fetch(
-        "https://bc2e-102-88-62-216.ngrok-free.app/ask",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            messages: lastSixMessages,
-          }),
-        }
-      );
+      const response = await fetch(`${API_URL}/ask`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: lastSixMessages,
+        }),
+      });
       const json = await response.json();
       sendFromApp(json.data.content);
       setLastSender("assistant");
       addNewMessageContext("assistant", json.data.content);
     } catch (error) {
+      console.log(error);
       sendFromApp("Uh oh, something went wrong. Please try again later.");
     } finally {
     }
