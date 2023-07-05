@@ -25,7 +25,7 @@ app.post("/ask", async (req, res) => {
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [assistant, ...req.body.messages],
-      max_tokens: 64,
+      max_tokens: process.env.OPENAI_MAX_TOKENS,
     });
     return res
       .status(200)

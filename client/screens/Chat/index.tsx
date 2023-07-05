@@ -66,7 +66,7 @@ const Chat = () => {
       setLastSender("assistant");
       addNewMessageContext("assistant", json.data.content);
     } catch (error) {
-      console.log(error);
+      console.log("error " + error);
       sendFromApp("Uh oh, something went wrong. Please try again later.");
     } finally {
     }
